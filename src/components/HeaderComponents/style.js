@@ -8,7 +8,7 @@ export const WrapperHeader = styled(Row)`
 `
 
 export const WrapperTextHeader = styled.span`
-    font-size: 18px;
+    font-size: 30px;
     color: #fff;
     font-weight: bold;
     text-align: left;
