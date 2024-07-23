@@ -1,8 +1,20 @@
 import React from 'react'
+import TypeProduct from '../../routers/TypeProduct/TypeProduct'
+import { WrapperTypeProduct } from './style'
 
 const HomePage = () => {
+  const arr = ['Đồ ăn nhanh', 'Thịt lợn', 'Thịt gà', 'Sữa', 'Trứng']
   return (
-    <div>HomePage</div>
+    <div style={{ padding: '0 120px' }}>
+      <WrapperTypeProduct>
+        {arr.map((item) => {
+          return (
+            <TypeProduct name={item} key={item} />
+          )
+        })}
+      </WrapperTypeProduct>
+      HomePage
+    </div>
   )
 }
 
