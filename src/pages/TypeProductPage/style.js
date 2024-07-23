@@ -1,7 +1,7 @@
 import { Col } from "antd";
 import styled from "styled-components";
 
-export const WrapperProducts = styled(Col)`
+export const WrapperProducts = styled.div`
     display: flex;
     justify-content: center; 
     gap: 15px;
