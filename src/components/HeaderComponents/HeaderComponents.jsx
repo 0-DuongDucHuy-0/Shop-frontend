@@ -8,7 +8,7 @@ import ButtonInputSearch from '../ButtonInputSearch/ButtonInputSearch';
 const HeaderComponents = () => {
   return (
     <div>
-      <WrapperHeader gutter={16}>
+      <WrapperHeader>
         <Col span={6}>
             <WrapperTextHeader>
                 ShopFood
