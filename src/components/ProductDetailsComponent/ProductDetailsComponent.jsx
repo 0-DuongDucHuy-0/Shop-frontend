@@ -1,8 +1,8 @@
-import { Col, Image, InputNumber, Row } from 'antd'
+import { Col, Image, Row } from 'antd'
 import React from 'react'
 import imageProduct from '../../assets/images/test.webp'
 import imageProductSmall from '../../assets/images/testSmall.webp'
-import { WrapperAddressProduct, WrapperBtnQualityProduct, WrapperInputNumber, WrapperPriceProduct, WrapperPriceTextProduct, WrapperQualityProduct, WrapperStyleColImage, WrapperStyleNameProduct, WrapperStyleSmail, WrapperStyleTextSell } from './style'
+import { WrapperAddressProduct, WrapperInputNumber, WrapperPriceProduct, WrapperPriceTextProduct, WrapperQualityProduct, WrapperStyleColImage, WrapperStyleNameProduct, WrapperStyleSmail, WrapperStyleTextSell } from './style'
 import { StarFilled, PlusOutlined, MinusOutlined } from '@ant-design/icons'
 import ButtonComponent from '../ButtonComponent/ButtonComponent'
 
