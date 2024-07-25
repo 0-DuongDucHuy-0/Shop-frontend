@@ -1,8 +1,8 @@
-import Slider from 'react-slick';
-import React from 'react'
-import { Image } from 'antd';
+import React from "react";
+import { Image } from "antd";
+import { WrapperSlideStyle } from "./style";
 
-const SliderComponent = ({arrImages}) => {
+const SliderComponent = ({ arrImages }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -10,17 +10,15 @@ const SliderComponent = ({arrImages}) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 10000,
+    autoplaySpeed: 5000,
   };
   return (
-    <Slider {...settings}>
+    <WrapperSlideStyle {...settings}>
       {arrImages.map((image) => {
-        return(
-          <Image src={image} alt="slide" preview={false} width="100%" />
-        )
+        return <Image src={image} alt="slide" preview={false} width="100%" />;
       })}
-    </Slider>
-  )
-}
+    </WrapperSlideStyle>
+  );
+};
 
-export default SliderComponent
+export default SliderComponent;
