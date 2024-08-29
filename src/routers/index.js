@@ -44,7 +44,7 @@ export const router = [
         isShowHeader: true
     },
     {
-        path: '*',
+        path: '/*',
         page: NotFoundPage,
         isShowHeader: false
     }

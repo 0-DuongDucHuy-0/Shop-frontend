@@ -1,5 +1,5 @@
 import React from 'react'
-import TypeProduct from '../../routers/TypeProduct/TypeProduct'
+import TypeProduct from '../../components/TypeProduct/TypeProduct'
 import { WrapperButtonMore, WrapperProducts, WrapperTypeProduct } from './style'
 import SliderComponent from '../../components/SliderComponent/SliderComponent'
 
