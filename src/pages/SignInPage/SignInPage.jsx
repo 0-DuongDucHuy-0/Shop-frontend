@@ -6,6 +6,8 @@ import { Image } from "antd";
 import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 import imageLogo from '../../assets/images/logo-login.png'
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import * as UserServices from '../../services/UserServices'
 
 const SignInPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false)
@@ -13,6 +15,12 @@ const SignInPage = () => {
   const [password, setPassword] = useState('')
 
   const navigate = useNavigate()
+
+  const mutation = useMutation({
+    mutationFn: data => UserServices.loginUser(data)
+  })
+
+  console.log('mutation', mutation)
 
   const togglePasswordVisibility = () => {
     setIsShowPassword(!isShowPassword);
@@ -30,6 +38,10 @@ const SignInPage = () => {
   }
 
   const handleSignIn = () => {
+    mutation.mutate({
+      email,
+      password
+    })
     console.log('sign-in', email, password)
   }
 
