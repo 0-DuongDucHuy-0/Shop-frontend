@@ -1,25 +1,25 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, isPending } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: '',
-  email: '',
-  access_token: ''
-}
+  name: "",
+  email: "",
+  access_token: "",
+};
 
 export const userSlider = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     updateUser: (state, action) => {
-        const { name, email, access_token} = action.payload
-        console.log('first', action)
-        state.name = name || email
-        state.email = email
-        state.access_token = access_token
+      const { name, email, access_token } = action.payload;
+      console.log("first", action);
+      state.name = name || email;
+      state.email = email;
+      state.access_token = access_token;
     },
   },
-})
+});
 
-export const { updateUser } = userSlider.actions
+export const { updateUser } = userSlider.actions;
 
-export default userSlider.reducer
+export default userSlider.reducer;
