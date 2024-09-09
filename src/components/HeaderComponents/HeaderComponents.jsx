@@ -1,4 +1,4 @@
-import { Badge, Button, Col, Popover } from "antd";
+import { Badge, Col, Popover } from "antd";
 import React, { useState } from "react";
 import {
   WrapperContent,
@@ -39,7 +39,9 @@ const HeaderComponents = () => {
   const content = (
     <div>
       <WrapperContent onClick={handleLogout}>Đăng suất</WrapperContent>
-      <WrapperContent>Chỉnh sửa profile</WrapperContent>
+      <WrapperContent onClick={() => navigate("/profile-user")}>
+        Chỉnh sửa profile
+      </WrapperContent>
     </div>
   );
   return (
@@ -69,10 +71,12 @@ const HeaderComponents = () => {
           <Loading isPending={pending}>
             <WrapperHeaderAccout>
               <UserOutlined style={{ fontSize: "30px" }} />
-              {user?.name ? (
+              {user?.access_token ? (
                 <>
                   <Popover content={content} trigger="click">
-                    <div style={{ cursor: "pointer" }}>{user.name}</div>
+                    <div style={{ cursor: "pointer" }}>
+                      {user.name || "User"}
+                    </div>
                   </Popover>
                 </>
               ) : (
