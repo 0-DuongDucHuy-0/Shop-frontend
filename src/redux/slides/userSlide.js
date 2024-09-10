@@ -7,6 +7,7 @@ const initialState = {
   address: "",
   access_token: "",
   avatar: "",
+  id: "",
   // isPending: false,
 };
 
@@ -22,14 +23,16 @@ export const userSlider = createSlice({
         phone = "",
         address = "",
         avatar = "",
+        _id = "",
       } = action.payload;
-      console.log("first", action);
+      console.log("first11");
       state.name = name;
       state.email = email;
       state.phone = phone;
       state.address = address;
       state.avatar = avatar;
       state.access_token = access_token;
+      state.id = _id;
     },
     resetUser: (state) => {
       state.name = "";
@@ -38,6 +41,7 @@ export const userSlider = createSlice({
       state.phone = "";
       state.address = "";
       state.avatar = "";
+      state.id = "";
     },
   },
 });

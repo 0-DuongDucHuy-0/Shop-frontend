@@ -1,5 +1,5 @@
 import { Badge, Col, Popover } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   WrapperContent,
   WrapperHeader,
@@ -18,11 +18,14 @@ import { useDispatch, useSelector } from "react-redux";
 import * as UserServices from "../../services/UserServices";
 import { resetUser } from "../../redux/slides/userSlide";
 import Loading from "../LoadingComponent/Loading";
+import { isPending } from "@reduxjs/toolkit";
 
 const HeaderComponents = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [userName, setUserName] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
   const [pending, setPending] = useState(false);
   const handleNavigateSignIn = () => {
     navigate("/sign-in");
@@ -35,6 +38,14 @@ const HeaderComponents = () => {
     dispatch(resetUser());
     setPending(false);
   };
+
+  useEffect(() => {
+    // setPending(true);
+    console.log("user?.name", user?.name);
+    setUserName(user?.name);
+    setUserAvatar(user?.avatar);
+    // setPending(false);
+  }, [user?.name, user?.avatar]);
 
   const content = (
     <div>
@@ -70,12 +81,25 @@ const HeaderComponents = () => {
         >
           <Loading isPending={pending}>
             <WrapperHeaderAccout>
-              <UserOutlined style={{ fontSize: "30px" }} />
+              {userAvatar ? (
+                <img
+                  src={userAvatar}
+                  alt="avatar"
+                  style={{
+                    height: "30px",
+                    width: "30px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <UserOutlined style={{ fontSize: "30px" }} />
+              )}
               {user?.access_token ? (
                 <>
                   <Popover content={content} trigger="click">
                     <div style={{ cursor: "pointer" }}>
-                      {user.name || "User"}
+                      {userName || "User"}
                     </div>
                   </Popover>
                 </>
