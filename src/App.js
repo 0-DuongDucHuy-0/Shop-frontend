@@ -21,8 +21,14 @@ function App() {
     let storegeData = localStorage.getItem("access_token");
     let decoded = {};
     if (storegeData) {
-      decoded = jwtDecode(storegeData);
-      console.log("decodedApp", decoded);
+      // decoded = jwtDecode(storegeData);
+      // console.log("decodedApp", decoded);
+      try {
+        decoded = jwtDecode(storegeData);
+        console.log("decodedApp", decoded);
+      } catch (error) {
+        console.error("Failed to decode JWT token:", error.message);
+      }
     }
     return { decoded, storegeData };
   };
