@@ -53,6 +53,11 @@ const HeaderComponents = () => {
       <WrapperContent onClick={() => navigate("/profile-user")}>
         Chỉnh sửa profile
       </WrapperContent>
+      {user?.isAdmin && (
+        <WrapperContent onClick={() => navigate("/system/admin")}>
+          Quản lý hệ thống
+        </WrapperContent>
+      )}
     </div>
   );
   return (

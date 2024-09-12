@@ -8,6 +8,7 @@ const initialState = {
   access_token: "",
   avatar: "",
   id: "",
+  isAdmin: false,
   // isPending: false,
 };
 
@@ -24,6 +25,7 @@ export const userSlider = createSlice({
         address = "",
         avatar = "",
         _id = "",
+        isAdmin,
       } = action.payload;
       console.log("first11");
       state.name = name;
@@ -33,6 +35,7 @@ export const userSlider = createSlice({
       state.avatar = avatar;
       state.access_token = access_token;
       state.id = _id;
+      state.isAdmin = isAdmin;
     },
     resetUser: (state) => {
       state.name = "";
@@ -42,6 +45,7 @@ export const userSlider = createSlice({
       state.address = "";
       state.avatar = "";
       state.id = "";
+      state.isAdmin = false;
     },
   },
 });
