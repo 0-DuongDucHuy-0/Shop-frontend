@@ -19,9 +19,9 @@ const AdminListUser = () => {
         >
           <PlusOutlined style={{ fontSize: "50px" }} />
         </Button>
-        <div style={{ marginTop: "15px" }}>
-          <TableComponent />
-        </div>
+      </div>
+      <div style={{ marginTop: "15px" }}>
+        <TableComponent />
       </div>
     </div>
   );
