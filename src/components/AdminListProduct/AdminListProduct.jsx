@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { WrapperHeader, WrapperUploadFile } from "./style";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal } from "antd";
 import TableComponent from "../TableComponent/TableComponent";
 import InputComponent from "../InputComponent/InputComponent";
@@ -9,6 +9,7 @@ import * as ProductServices from "../../services/ProductServices";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import Loading from "../LoadingComponent/Loading";
 import * as message from "../../components/Message/Message";
+import { useQuery } from "@tanstack/react-query";
 
 const AdminListProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,7 +38,59 @@ const AdminListProduct = () => {
     return res;
   });
 
+  const getAllProduct = async () => {
+    const res = await ProductServices.getAllProduct();
+    return res;
+  };
+
   const { data, isPending, isSuccess, isError } = mutation;
+
+  const { isPending: isLoadingProduct, data: listProduct } = useQuery({
+    queryKey: ["product"],
+    queryFn: getAllProduct,
+  });
+
+  const renderAction = () => {
+    return (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <EditOutlined
+          style={{ color: "#32CD32", fontSize: "25px", marginRight: "30px" }}
+        />
+        <DeleteOutlined style={{ color: "#FF6347", fontSize: "25px" }} />
+      </div>
+    );
+  };
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      render: (text) => <p>{text}</p>,
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+    },
+    {
+      title: "Rating",
+      dataIndex: "rating",
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+    },
+    {
+      title: "", // "Action"
+      dataIndex: "action",
+      render: renderAction,
+    },
+  ];
+
+  const dataTable = listProduct?.data.map((product) => {
+    return { ...product, key: product._id };
+  });
+
+  console.log("listPro", isLoadingProduct, listProduct);
 
   useEffect(() => {
     if (isSuccess && data?.status === "OK") {
@@ -49,6 +102,7 @@ const AdminListProduct = () => {
   }, [isSuccess]);
 
   const handleCancel = () => {
+    setIsModalOpen(false);
     setStateProduct({
       name: "",
       image: "",
@@ -58,7 +112,6 @@ const AdminListProduct = () => {
       rating: "",
       description: "",
     });
-    setIsModalOpen(false);
   };
 
   const onFinish = () => {
@@ -101,26 +154,32 @@ const AdminListProduct = () => {
         </Button>
       </div>
       <div style={{ marginTop: "15px" }}>
-        <TableComponent />
+        <TableComponent
+          columns={columns}
+          data={dataTable}
+          isLoading={isLoadingProduct}
+        />
       </div>
-      <Modal title="Tạo sản phẩm" open={isModalOpen} onCancel={handleCancel}>
+      <Modal
+        title="Tạo sản phẩm"
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={null}
+      >
         <Loading isPending={isPending}>
           <Form
             name="basic"
             labelCol={{
-              span: 8,
+              span: 6,
             }}
             wrapperCol={{
-              span: 16,
+              span: 20,
             }}
             style={{
               maxWidth: 600,
             }}
-            initialValues={{
-              remember: true,
-            }}
             onFinish={onFinish}
-            autoComplete="off"
+            // autoComplete="on"
           >
             <Form.Item
               label="Name"
