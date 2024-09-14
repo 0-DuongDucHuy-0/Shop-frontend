@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import * as UserServices from "../../services/UserServices";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import Loading from "../../components/LoadingComponent/Loading";
-import { Button, message, Upload } from "antd";
+import { Button, message } from "antd";
 import { updateUser } from "../../redux/slides/userSlide";
 import { useDispatch } from "react-redux";
 import { UploadOutlined } from "@ant-design/icons";
