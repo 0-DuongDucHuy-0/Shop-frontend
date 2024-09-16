@@ -12,11 +12,13 @@ import * as message from "../../components/Message/Message";
 import { useQuery } from "@tanstack/react-query";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const AdminListProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState("");
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+  const user = useSelector((state) => state?.user);
   const [stateProduct, setStateProduct] = useState({
     name: "",
     image: "",
@@ -52,12 +54,27 @@ const AdminListProduct = () => {
     return res;
   });
 
+  const mutationUpdate = useMutationHooks((data) => {
+    console.log("data___", data);
+    const { id, token, ...rests } = data;
+    const res = ProductServices.updateProduct(id, token, { ...rests });
+    return res;
+  });
+
   const getAllProduct = async () => {
     const res = await ProductServices.getAllProduct();
     return res;
   };
 
   const { data, isPending, isSuccess, isError } = mutation;
+  const {
+    data: dataUpdated,
+    isPending: isPendingUpdated,
+    isSuccess: isSuccessUpdated,
+    isError: isErrorUpdated,
+  } = mutationUpdate;
+
+  console.log("dataUpdated", dataUpdated);
 
   const { isPending: isLoadingProduct, data: listProduct } = useQuery({
     queryKey: ["product"],
@@ -153,6 +170,15 @@ const AdminListProduct = () => {
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (isSuccessUpdated && dataUpdated?.status === "OK") {
+      message.success();
+      handleCloseDrawer();
+    } else if (isErrorUpdated) {
+      message.error();
+    }
+  }, [isSuccessUpdated]);
+
   const handleCancel = () => {
     setIsModalOpen(false);
     setStateProduct({
@@ -164,6 +190,21 @@ const AdminListProduct = () => {
       rating: "",
       description: "",
     });
+    // form.resetFields();
+  };
+
+  const handleCloseDrawer = () => {
+    setIsOpenDrawer(false);
+    setStateProductDetail({
+      name: "",
+      image: "",
+      type: "",
+      price: "",
+      countInStock: "",
+      rating: "",
+      description: "",
+    });
+    form.resetFields();
   };
 
   const onFinish = () => {
@@ -205,6 +246,14 @@ const AdminListProduct = () => {
     setStateProductDetail({
       ...stateProductDetail,
       image: file.preview,
+    });
+  };
+
+  const onUpdateProduct = () => {
+    mutationUpdate.mutate({
+      id: rowSelected,
+      token: user?.access_token,
+      ...stateProductDetail,
     });
   };
 
@@ -424,7 +473,7 @@ const AdminListProduct = () => {
             style={{
               maxWidth: 600,
             }}
-            onFinish={onFinish}
+            onFinish={onUpdateProduct}
             autoComplete="on"
             form={form}
           >
@@ -568,7 +617,7 @@ const AdminListProduct = () => {
               }}
             >
               <Button type="primary" htmlType="submit">
-                Submit
+                Apply
               </Button>
             </Form.Item>
           </Form>
