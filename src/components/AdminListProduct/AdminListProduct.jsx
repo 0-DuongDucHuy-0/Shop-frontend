@@ -13,11 +13,13 @@ import { useQuery } from "@tanstack/react-query";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import ModalComponent from "../ModalComponent/ModalComponent";
 
 const AdminListProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rowSelected, setRowSelected] = useState("");
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
   const user = useSelector((state) => state?.user);
   const [stateProduct, setStateProduct] = useState({
     name: "",
@@ -55,9 +57,14 @@ const AdminListProduct = () => {
   });
 
   const mutationUpdate = useMutationHooks((data) => {
-    console.log("data___", data);
     const { id, token, ...rests } = data;
     const res = ProductServices.updateProduct(id, token, { ...rests });
+    return res;
+  });
+
+  const mutationDelete = useMutationHooks((data) => {
+    const { id, token } = data;
+    const res = ProductServices.deleteProduct(id, token);
     return res;
   });
 
@@ -73,6 +80,13 @@ const AdminListProduct = () => {
     isSuccess: isSuccessUpdated,
     isError: isErrorUpdated,
   } = mutationUpdate;
+
+  const {
+    data: dataDelete,
+    isPending: isPendingDelete,
+    isSuccess: isSuccessDelete,
+    isError: isErrorDelete,
+  } = mutationDelete;
 
   console.log("dataUpdated", dataUpdated);
 
@@ -126,7 +140,10 @@ const AdminListProduct = () => {
           style={{ color: "#32CD32", fontSize: "25px", marginRight: "30px" }}
           onClick={handleDetailsProduct}
         />
-        <DeleteOutlined style={{ color: "#FF6347", fontSize: "25px" }} />
+        <DeleteOutlined
+          style={{ color: "#FF6347", fontSize: "25px" }}
+          onClick={() => setIsModalOpenDelete(true)}
+        />
       </div>
     );
   };
@@ -177,6 +194,15 @@ const AdminListProduct = () => {
       message.error();
     }
   }, [isSuccessUpdated]);
+
+  useEffect(() => {
+    if (isSuccessDelete && dataDelete?.status === "OK") {
+      message.success();
+      handleCancelDelete();
+    } else if (isErrorDelete) {
+      message.error();
+    }
+  }, [isSuccessDelete]);
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -267,6 +293,21 @@ const AdminListProduct = () => {
     );
   };
 
+  const handleCancelDelete = () => {
+    setIsModalOpenDelete(false);
+  };
+
+  const handleDeleteProduct = () => {
+    mutationDelete.mutate(
+      { id: rowSelected, token: user?.access_token },
+      {
+        onSettled: () => {
+          queryAllProduct.refetch();
+        },
+      }
+    );
+  };
+
   return (
     <div>
       <WrapperHeader>Quản lý người dùng</WrapperHeader>
@@ -301,7 +342,7 @@ const AdminListProduct = () => {
           }}
         />
       </div>
-      <Modal
+      <ModalComponent
         title="Tạo sản phẩm"
         open={isModalOpen}
         onCancel={handleCancel}
@@ -464,7 +505,7 @@ const AdminListProduct = () => {
             </Form.Item>
           </Form>
         </Loading>
-      </Modal>
+      </ModalComponent>
       <DrawerComponent
         title="Chi tiết sản phẩm"
         isOpen={isOpenDrawer}
@@ -633,6 +674,14 @@ const AdminListProduct = () => {
           </Form>
         </Loading>
       </DrawerComponent>
+      <ModalComponent
+        title="Xoá sản phẩm"
+        open={isModalOpenDelete}
+        onCancel={handleCancelDelete}
+        onOk={handleDeleteProduct}
+      >
+        <div>Xác nhận xoá sản phẩm !!!</div>
+      </ModalComponent>
     </div>
   );
 };
