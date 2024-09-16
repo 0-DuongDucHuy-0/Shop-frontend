@@ -76,10 +76,12 @@ const AdminListProduct = () => {
 
   console.log("dataUpdated", dataUpdated);
 
-  const { isPending: isLoadingProduct, data: listProduct } = useQuery({
+  const queryAllProduct = useQuery({
     queryKey: ["product"],
     queryFn: getAllProduct,
   });
+
+  const { isPending: isLoadingProduct, data: listProduct } = queryAllProduct;
 
   const fetchGetDetailsProduct = async (rowSelected) => {
     // const res = await axios.get(
@@ -250,11 +252,18 @@ const AdminListProduct = () => {
   };
 
   const onUpdateProduct = () => {
-    mutationUpdate.mutate({
-      id: rowSelected,
-      token: user?.access_token,
-      ...stateProductDetail,
-    });
+    mutationUpdate.mutate(
+      {
+        id: rowSelected,
+        token: user?.access_token,
+        ...stateProductDetail,
+      },
+      {
+        onSettled: () => {
+          queryAllProduct.refetch();
+        },
+      }
+    );
   };
 
   return (
