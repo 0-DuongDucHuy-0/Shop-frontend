@@ -116,9 +116,6 @@ const AdminListProduct = () => {
   console.log("firsthuy", stateProductDetail);
 
   const handleDetailsProduct = () => {
-    if (rowSelected.length) {
-      fetchGetDetailsProduct(rowSelected);
-    }
     setIsOpenDrawer(true);
   };
 
