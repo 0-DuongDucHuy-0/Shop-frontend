@@ -210,7 +210,11 @@ const AdminListProduct = () => {
   };
 
   const onFinish = () => {
-    mutation.mutate(stateProduct);
+    mutation.mutate(stateProduct, {
+      onSettled: () => {
+        queryAllProduct.refetch();
+      },
+    });
   };
 
   const handleOnchange = (e) => {
