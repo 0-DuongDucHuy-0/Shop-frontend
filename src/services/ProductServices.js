@@ -8,10 +8,17 @@ export const getAllProduct = async () => {
 };
 
 export const createProduct = async (data) => {
-  console.log("datahhh", data);
   const res = await axios.post(
     `${process.env.REACT_APP_API_URL}/product/create`,
     data
+  );
+  return res.data;
+};
+
+export const getDetailsProduct = async (id) => {
+  console.log("id", id);
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/product/details/${id}`
   );
   return res.data;
 };
