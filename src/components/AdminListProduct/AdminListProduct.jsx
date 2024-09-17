@@ -6,7 +6,7 @@ import {
   DeleteOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Space } from "antd";
+import { Button, Form, Space } from "antd";
 import TableComponent from "../TableComponent/TableComponent";
 import InputComponent from "../InputComponent/InputComponent";
 import { getBase64 } from "../../utils";
@@ -16,7 +16,6 @@ import Loading from "../LoadingComponent/Loading";
 import * as message from "../../components/Message/Message";
 import { useQuery } from "@tanstack/react-query";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import ModalComponent from "../ModalComponent/ModalComponent";
 
@@ -474,11 +473,7 @@ const AdminListProduct = () => {
             return {
               onClick: (event) => {
                 setRowSelected(record._id);
-              }, // click row
-              // onDoubleClick: (event) => {}, // double click row
-              // onContextMenu: (event) => {}, // right button click row
-              // onMouseEnter: (event) => {}, // mouse enter row
-              // onMouseLeave: (event) => {}, // mouse leave row
+              },
             };
           }}
         />

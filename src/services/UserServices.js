@@ -57,3 +57,28 @@ export const updateUser = async (id, data, access_token) => {
   );
   return res.data;
 };
+
+export const getAllUser = async (access_token) => {
+  const res = await axiosJWT.get(
+    `${process.env.REACT_APP_API_URL}/user/get-all-user`,
+    {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+export const deleteUser = async (id, access_token, data) => {
+  const res = await axiosJWT.delete(
+    `${process.env.REACT_APP_API_URL}/user/delete-user/${id}`,
+    data,
+    {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    }
+  );
+  return res.data;
+};
