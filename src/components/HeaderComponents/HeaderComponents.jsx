@@ -19,6 +19,7 @@ import * as UserServices from "../../services/UserServices";
 import { resetUser } from "../../redux/slides/userSlide";
 import Loading from "../LoadingComponent/Loading";
 import { isPending } from "@reduxjs/toolkit";
+import { searchProduct } from "../../redux/slides/productSlide";
 
 const HeaderComponents = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const HeaderComponents = () => {
   const [userName, setUserName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
   const [pending, setPending] = useState(false);
+  const [search, setSearch] = useState("");
   const handleNavigateSignIn = () => {
     navigate("/sign-in");
   };
@@ -60,6 +62,13 @@ const HeaderComponents = () => {
       )}
     </div>
   );
+
+  const onSearch = (e) => {
+    setSearch(e.target.value);
+    dispatch(searchProduct(e.target.value));
+    console.log("e", e.target.value);
+  };
+
   return (
     <div
       style={{
@@ -78,6 +87,7 @@ const HeaderComponents = () => {
             size="large"
             textButton="Tìm kiếm"
             placeholder="input search text"
+            onChange={onSearch}
           />
         </Col>
         <Col
