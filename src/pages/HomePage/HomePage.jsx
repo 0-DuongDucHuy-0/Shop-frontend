@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TypeProduct from "../../components/TypeProduct/TypeProduct";
 import {
   WrapperButtonMore,
@@ -13,21 +13,42 @@ import slider3 from "../../assets/images/slider3.jpg";
 import CardComponent from "../../components/CardComponent/CardComponent";
 import * as ProductService from "../../services/ProductServices";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { useDebounce } from "../../hooks/useDebounce ";
 
 const HomePage = () => {
+  const searchProduct = useSelector((state) => state?.product?.search);
+  const searchDebounce = useDebounce(searchProduct, 1000);
+  const refSearch = useRef();
+  const [stateProduct, setStateProduct] = useState([]);
   const arr = ["Đồ ăn nhanh", "Thịt lợn", "Thịt gà", "Sữa", "Trứng"];
 
-  const fetchAllProduct = async () => {
-    const res = await ProductService.getAllProduct();
-    return res;
+  const fetchAllProduct = async (search) => {
+    const res = await ProductService.getAllProduct(search);
+    if (search?.length || refSearch.current) {
+      setStateProduct(res?.data);
+    } else {
+      return res;
+    }
   };
+
+  useEffect(() => {
+    if (refSearch.current) {
+      fetchAllProduct(searchDebounce);
+    }
+    refSearch.current = true;
+  }, [searchDebounce]);
 
   const { isPending, data: products } = useQuery({
     queryKey: ["products"], // Correct way to pass the key
     queryFn: fetchAllProduct, // Correct way to pass the query function
   });
 
-  console.log("data1", products);
+  useEffect(() => {
+    if (products?.data?.length) {
+      setStateProduct(products?.data);
+    }
+  }, [products]);
 
   return (
     <>
@@ -48,7 +69,7 @@ const HomePage = () => {
         >
           <SliderComponent arrImages={[slider1, slider2, slider3]} />
           <WrapperProducts>
-            {products?.data.map((product) => {
+            {stateProduct?.map((product) => {
               return (
                 <CardComponent
                   key={product._id}
@@ -64,20 +85,6 @@ const HomePage = () => {
                 />
               );
             })}
-
-            {/* <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent />
-            <CardComponent /> */}
           </WrapperProducts>
           <div
             style={{
