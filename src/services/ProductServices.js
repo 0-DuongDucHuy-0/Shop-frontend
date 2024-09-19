@@ -5,7 +5,6 @@ export const getAllProduct = async (search) => {
   console.log("search", search);
   let res = {};
   if (search.length) {
-    console.log("123");
     res = await axios.get(
       `${process.env.REACT_APP_API_URL}/product/get-all?filter=name&filter=${search}`
     );
@@ -57,8 +56,16 @@ export const deleteProduct = async (id, access_token) => {
   return res.data;
 };
 
+export const getAllTypeProduct = async () => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/product/get-all-type`
+  );
+  return res.data;
+};
+
 // router.post('/create', productController.createProduct)
 // router.put('/update/:id', productController.updateProduct)
 // router.get('/details/:id', productController.getDetailsProduct)
 // router.delete('/delete/:id', productController.deleteProduct)
 // router.get('/get-all', productController.getAllProduct)
+// router.get("/get-all-type", productController.getAllType);
