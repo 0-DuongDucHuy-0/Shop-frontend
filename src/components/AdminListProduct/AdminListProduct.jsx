@@ -77,7 +77,7 @@ const AdminListProduct = () => {
   });
 
   const getAllProduct = async () => {
-    const res = await ProductServices.getAllProduct();
+    const res = await ProductServices.getAllProduct("");
     return res;
   };
 
@@ -96,8 +96,6 @@ const AdminListProduct = () => {
     isError: isErrorDelete,
   } = mutationDelete;
 
-  console.log("dataUpdated", dataUpdated);
-
   const queryAllProduct = useQuery({
     queryKey: ["product"],
     queryFn: getAllProduct,
@@ -110,7 +108,6 @@ const AdminListProduct = () => {
     //   `http://localhost:3002/api/product/details/${rowSelected}`
     // );
     const res = await ProductServices.getDetailsProduct(rowSelected);
-    console.log("Product details fetched successfully:", res);
     if (res?.data) {
       setStateProductDetail({
         name: res.data.name,
@@ -134,8 +131,6 @@ const AdminListProduct = () => {
     // form.setFieldValue(stateProductDetail);
     form.setFieldsValue(stateProductDetail);
   }, [form, stateProductDetail]);
-
-  console.log("firsthuy", stateProductDetail);
 
   const handleDetailsProduct = () => {
     setIsOpenDrawer(true);
@@ -165,6 +160,8 @@ const AdminListProduct = () => {
     clearFilters();
     setSearchText("");
   };
+
+  console.log("stateProduct", stateProduct);
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -214,28 +211,6 @@ const AdminListProduct = () => {
           >
             Reset
           </Button>
-          {/* <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button> */}
-          {/* <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button> */}
         </Space>
       </div>
     ),
@@ -253,20 +228,6 @@ const AdminListProduct = () => {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    // render: (text) =>
-    //   searchedColumn === dataIndex ? (
-    //     <Highlighter
-    //       highlightStyle={{
-    //         backgroundColor: '#ffc069',
-    //         padding: 0,
-    //       }}
-    //       searchWords={[searchText]}
-    //       autoEscape
-    //       textToHighlight={text ? text.toString() : ''}
-    //     />
-    //   ) : (
-    //     text
-    //   ),
   });
 
   const columns = [
@@ -295,10 +256,6 @@ const AdminListProduct = () => {
           text: "Sữa",
           value: "sữa" && "milk",
         },
-        // {
-        //   text: "Sữa",
-        //   value: "milk",
-        // },
         {
           text: "Trứng",
           value: "eggs",
@@ -399,7 +356,6 @@ const AdminListProduct = () => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-    console.log("file.preview", file.preview);
     setStateProduct({
       ...stateProduct,
       image: file.preview,
@@ -411,7 +367,6 @@ const AdminListProduct = () => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-    console.log("file.preview", file.preview);
     setStateProductDetail({
       ...stateProductDetail,
       image: file.preview,
