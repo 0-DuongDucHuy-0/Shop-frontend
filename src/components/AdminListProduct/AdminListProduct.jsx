@@ -6,7 +6,7 @@ import {
   DeleteOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Space } from "antd";
+import { Button, Form, Select, Space } from "antd";
 import TableComponent from "../TableComponent/TableComponent";
 import InputComponent from "../InputComponent/InputComponent";
 import { getBase64 } from "../../utils";
@@ -27,6 +27,7 @@ const AdminListProduct = () => {
   const user = useSelector((state) => state?.user);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [typeSelect, setTypeSelect] = useState("");
   const searchInput = useRef(null);
 
   const [stateProduct, setStateProduct] = useState({
@@ -338,9 +339,18 @@ const AdminListProduct = () => {
   };
 
   const handleOnchange = (e) => {
+    console.log("e123", e);
     setStateProduct({
       ...stateProduct,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleOnchangeSelect = (value) => {
+    setTypeSelect(value);
+    setStateProduct({
+      ...stateProduct,
+      type: value,
     });
   };
 
@@ -481,10 +491,52 @@ const AdminListProduct = () => {
                 },
               ]}
             >
-              <InputComponent
-                value={stateProduct?.type}
-                onChange={handleOnchange}
+              <Select
+                // showSearch
                 name="type"
+                value={stateProduct?.type}
+                // placeholder="Select a person"
+                // optionFilterProp="label"
+                onChange={handleOnchangeSelect}
+                // onSearch={onSearch}
+                options={[
+                  {
+                    value: "Hoa quả",
+                    label: "Hoa quả",
+                  },
+                  {
+                    value: "Bánh",
+                    label: "Bánh",
+                  },
+                  {
+                    value: "Trứng",
+                    label: "Trứng",
+                  },
+                  {
+                    value: "Sữa",
+                    label: "Sữa",
+                  },
+                  {
+                    value: "Thịt",
+                    label: "Thịt",
+                  },
+                  {
+                    value: "Hải sản",
+                    label: "Hải sản",
+                  },
+                  {
+                    value: "Đồ uống",
+                    label: "Đồ uống",
+                  },
+                  {
+                    value: "Rau củ",
+                    label: "Rau củ",
+                  },
+                  {
+                    value: "Khác",
+                    label: "Khác",
+                  },
+                ]}
               />
             </Form.Item>
 
