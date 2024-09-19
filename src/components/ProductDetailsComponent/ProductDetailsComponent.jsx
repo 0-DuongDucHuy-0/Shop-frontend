@@ -1,94 +1,218 @@
-import { Col, Image, Row } from 'antd'
-import React from 'react'
-import imageProduct from '../../assets/images/test.webp'
-import imageProductSmall from '../../assets/images/testSmall.webp'
-import { WrapperAddressProduct, WrapperInputNumber, WrapperPriceProduct, WrapperPriceTextProduct, WrapperQualityProduct, WrapperStyleColImage, WrapperStyleNameProduct, WrapperStyleSmail, WrapperStyleTextSell } from './style'
-import { StarFilled, PlusOutlined, MinusOutlined } from '@ant-design/icons'
-import ButtonComponent from '../ButtonComponent/ButtonComponent'
+import { Col, Image, Rate, Row } from "antd";
+import React, { useState } from "react";
+import imageProduct from "../../assets/images/test.webp";
+import imageProductSmall from "../../assets/images/testSmall.webp";
+import {
+  WrapperAddressProduct,
+  WrapperInputNumber,
+  WrapperPriceProduct,
+  WrapperPriceTextProduct,
+  WrapperQualityProduct,
+  WrapperStyleColImage,
+  WrapperStyleNameProduct,
+  WrapperStyleSmail,
+  WrapperStyleTextSell,
+} from "./style";
+import {
+  StarFilled,
+  PlusOutlined,
+  MinusOutlined,
+  StarOutlined,
+} from "@ant-design/icons";
+import ButtonComponent from "../ButtonComponent/ButtonComponent";
+import * as ProductServices from "../../services/ProductServices";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../LoadingComponent/Loading";
+import { useSelector } from "react-redux";
 
-const ProductDetailsComponent = () => {
-  const onChange = () => {}
+const ProductDetailsComponent = ({ idProduct }) => {
+  const [numProduct, setNumProduct] = useState();
+  const user = useSelector((state) => state.user);
+
+  console.log("user", user);
+
+  const onChange = (e) => {
+    setNumProduct(Number(e));
+  };
+
+  const fetchGetDetailsProduct = async (context) => {
+    const id = context?.queryKey && context?.queryKey[1];
+    if (id) {
+      const res = await ProductServices.getDetailsProduct(id);
+      return res.data;
+    }
+  };
+
+  const { isLoading, data: productDetail } = useQuery({
+    queryKey: ["product-details", idProduct], // Query key
+    queryFn: fetchGetDetailsProduct, // Fetch function
+    retry: 3, // Retry the query up to 3 times on failure
+    retryDelay: 1000, // Wait 1 second between retries
+    keepPreviousData: true, // Keep previous data while fetching new data
+    enabled: !!idProduct,
+  });
+
+  //   const renderStars = (filledStars, totalStars = 5) => {
+  //     const stars = [];
+
+  //     // Thêm sao đã lấp đầy
+  //     for (let i = 1; i < filledStars; i++) {
+  //       stars.push(
+  //         <StarFilled style={{ fontSize: "12px", color: "rgb(253, 216, 54)" }} />
+  //       );
+  //     }
+
+  //     // Thêm sao chưa lấp đầy (nếu totalStars > filledStars)
+  //     for (let i = filledStars; i < totalStars; i++) {
+  //       stars.push(<StarOutlined style={{ fontSize: "12px", color: "#ccc" }} />);
+  //     }
+
+  //     return stars; // Trả về mảng các phần tử JSX
+  //   };
+
+  const handleChangCount = (type) => {
+    if (type === "increase") {
+      setNumProduct(numProduct + 1);
+    } else {
+      setNumProduct(numProduct - 1);
+    }
+  };
+
   return (
-    <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px' }} >
-        <Col span={10} style={{ paddingRight: '10px'}}>
-            <Image src= {imageProduct} alt='image product' preview={false} />
-            <Row style={{ paddingTop: '10px', justifyContent: 'space-between' }} >
-                <WrapperStyleColImage span={4}>
-                    <WrapperStyleSmail src={imageProductSmall} alt='imageProductSmall' preview={false} />
-                </WrapperStyleColImage>
-                <WrapperStyleColImage span={4}>
-                    <WrapperStyleSmail src={imageProductSmall} alt='imageProductSmall' preview={false} />
-                </WrapperStyleColImage>
-                <WrapperStyleColImage span={4}>
-                    <WrapperStyleSmail src={imageProductSmall} alt='imageProductSmall' preview={false} />
-                </WrapperStyleColImage>
-                <WrapperStyleColImage span={4}>
-                    <WrapperStyleSmail src={imageProductSmall} alt='imageProductSmall' preview={false} />
-                </WrapperStyleColImage>
-                <WrapperStyleColImage span={4}>
-                    <WrapperStyleSmail src={imageProductSmall} alt='imageProductSmall' preview={false} />
-                </WrapperStyleColImage>
-            </Row>
+    <Loading isPending={isLoading}>
+      <Row style={{ padding: "16px", background: "#fff", borderRadius: "4px" }}>
+        <Col span={10} style={{ paddingRight: "10px" }}>
+          <Image
+            src={productDetail?.image}
+            alt="image product"
+            preview={false}
+          />
+          <Row style={{ paddingTop: "10px", justifyContent: "space-between" }}>
+            <WrapperStyleColImage span={4}>
+              <WrapperStyleSmail
+                src={imageProductSmall}
+                alt="imageProductSmall"
+                preview={false}
+              />
+            </WrapperStyleColImage>
+            <WrapperStyleColImage span={4}>
+              <WrapperStyleSmail
+                src={imageProductSmall}
+                alt="imageProductSmall"
+                preview={false}
+              />
+            </WrapperStyleColImage>
+            <WrapperStyleColImage span={4}>
+              <WrapperStyleSmail
+                src={imageProductSmall}
+                alt="imageProductSmall"
+                preview={false}
+              />
+            </WrapperStyleColImage>
+            <WrapperStyleColImage span={4}>
+              <WrapperStyleSmail
+                src={imageProductSmall}
+                alt="imageProductSmall"
+                preview={false}
+              />
+            </WrapperStyleColImage>
+            <WrapperStyleColImage span={4}>
+              <WrapperStyleSmail
+                src={imageProductSmall}
+                alt="imageProductSmall"
+                preview={false}
+              />
+            </WrapperStyleColImage>
+          </Row>
         </Col>
-        <Col span={14} style={{ paddingLeft: '10px'}}>
-            <WrapperStyleNameProduct>Trứng Vịt - Từ nông trại đến bàn ăn </WrapperStyleNameProduct>
-            <div>
-                <StarFilled style={{ fontSize: '12px', color: 'rgb(253, 216, 54)' }} />
-                <StarFilled style={{ fontSize: '12px', color: 'rgb(253, 216, 54)' }} />
-                <StarFilled style={{ fontSize: '12px', color: 'rgb(253, 216, 54)' }} />
-                <StarFilled style={{ fontSize: '12px', color: 'rgb(253, 216, 54)' }} />
-                <StarFilled style={{ fontSize: '12px', color: 'rgb(253, 216, 54)' }} />
-                <WrapperStyleTextSell> | Đã bán 1000+ </WrapperStyleTextSell>
-            </div>
-            <WrapperPriceProduct>
-                <WrapperPriceTextProduct>200.000</WrapperPriceTextProduct>
-            </WrapperPriceProduct>
-            <WrapperAddressProduct>
-                <span>Giao đến </span>
-                <span className='address'>Khu 4, sao vàng thọ xuân thanh hoá </span>
-                <span className='change-add'>đổi địa chỉ</span>
-            </WrapperAddressProduct> 
-            <div style={{ margin: '10px 0 20px', padding: '10px 0' }}>
-                <div style={{ marginBottom: '10px' }}>Số lượng</div>
-                <WrapperQualityProduct>
-                    <button style={{ border: 'none', background: 'transparent' }}>
-                        <MinusOutlined style={{ color: '#000', fontSize: '20px' }} />
-                    </button>
-                    <WrapperInputNumber defaultValue={3} onChange={onChange} size='small'/>
-                    <button style={{ border: 'none', background: 'transparent' }}>
-                        <PlusOutlined style={{ color: '#000', fontSize: '20px' }} />
-                    </button>
-                </WrapperQualityProduct>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <ButtonComponent
-                    size={40}
-                    styleButton={{
-                        background: 'rgb(255, 57, 69)',
-                        height: '48px',
-                        width: '220px',
-                        border: 'none',
-                        borderRadius: '4px',
-                    }}
-                    textButton={'Chọn mua'}
-                    styleTextButton={{ color: '#fff' }}
-                ></ButtonComponent>
-                <ButtonComponent
-                    size={40}
-                    styleButton={{
-                        background: '#fff',
-                        height: '48px',
-                        width: '220px',
-                        border: '1px solid rgb(13, 92, 182)',
-                        borderRadius: '4px',
-                    }}
-                    textButton={'Mua trả sau'}
-                    styleTextButton={{ color: 'rgb(13, 92, 182)' }}
-                ></ButtonComponent>
-            </div>
+        <Col span={14} style={{ paddingLeft: "10px" }}>
+          <WrapperStyleNameProduct>
+            {productDetail?.name}
+          </WrapperStyleNameProduct>
+          <div>
+            <Rate
+              disabled
+              defaultValue={5}
+              value={Math.round(productDetail?.rating * 2) / 2}
+              style={{ fontSize: "12px", color: "rgb(253, 216, 54)" }}
+            />
+            <WrapperStyleTextSell> | Đã bán 1000+ </WrapperStyleTextSell>
+          </div>
+          <WrapperPriceProduct>
+            <WrapperPriceTextProduct>
+              {productDetail?.price}
+            </WrapperPriceTextProduct>
+          </WrapperPriceProduct>
+          <WrapperAddressProduct>
+            <span>Giao đến </span>
+            <span className="address">{user?.address}</span>
+            <span className="change-add">đổi địa chỉ</span>
+          </WrapperAddressProduct>
+          <div style={{ margin: "10px 0 20px", padding: "10px 0" }}>
+            <div style={{ marginBottom: "10px" }}>Số lượng</div>
+            <WrapperQualityProduct>
+              <button
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                }}
+              >
+                <MinusOutlined
+                  style={{ color: "#000", fontSize: "20px" }}
+                  onClick={() => handleChangCount("decrease")}
+                />
+              </button>
+              <WrapperInputNumber
+                onChange={onChange}
+                defaultValue={1}
+                value={numProduct}
+                size="small"
+              />
+              <button
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                }}
+              >
+                <PlusOutlined
+                  style={{ color: "#000", fontSize: "20px" }}
+                  onClick={() => handleChangCount("increase")}
+                />
+              </button>
+            </WrapperQualityProduct>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <ButtonComponent
+              size={40}
+              styleButton={{
+                background: "rgb(255, 57, 69)",
+                height: "48px",
+                width: "220px",
+                border: "none",
+                borderRadius: "4px",
+              }}
+              textButton={"Chọn mua"}
+              styleTextButton={{ color: "#fff" }}
+            ></ButtonComponent>
+            <ButtonComponent
+              size={40}
+              styleButton={{
+                background: "#fff",
+                height: "48px",
+                width: "220px",
+                border: "1px solid rgb(13, 92, 182)",
+                borderRadius: "4px",
+              }}
+              textButton={"Mua trả sau"}
+              styleTextButton={{ color: "rgb(13, 92, 182)" }}
+            ></ButtonComponent>
+          </div>
         </Col>
-    </Row>
-  )
-}
+      </Row>
+    </Loading>
+  );
+};
 
-export default ProductDetailsComponent
+export default ProductDetailsComponent;

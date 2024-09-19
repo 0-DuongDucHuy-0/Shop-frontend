@@ -27,6 +27,7 @@ const HomePage = () => {
     const res = await ProductService.getAllProduct(search);
     if (search?.length || refSearch.current) {
       setStateProduct(res?.data);
+      return [];
     } else {
       return res;
     }
@@ -82,6 +83,7 @@ const HomePage = () => {
                   type={product.type}
                   discount={product.discount}
                   selled={product.selled}
+                  id={product._id}
                 />
               );
             })}

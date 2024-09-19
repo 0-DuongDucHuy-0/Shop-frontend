@@ -47,7 +47,7 @@ export const router = [
     isPrivate: false,
   },
   {
-    path: "/product-details",
+    path: "/product-details/:id",
     page: ProductDetailsPage,
     isShowHeader: true,
     isPrivate: false,

@@ -8,19 +8,9 @@ import {
   WrapperStyleTextSell,
 } from "./style";
 import { StarFilled } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const CardComponent = (props) => {
-  // key={product._id}
-  // countInStock={product.countInStock}
-  // description={product.description}
-  // image={product.image}
-  // name={product.name}
-  // price={product.price}
-  // rating={product.rating}
-  // type={product.type}
-  // discount={product.discount}
-  //                 selled={product.selled}
-
   const {
     key,
     countInStock,
@@ -32,7 +22,13 @@ const CardComponent = (props) => {
     type,
     discount,
     selled,
+    id,
   } = props;
+
+  const navigator = useNavigate();
+  const handleDetailProduct = (id) => {
+    navigator(`/product-details/${id}`);
+  };
 
   return (
     <WrapperCardStyle
@@ -40,12 +36,8 @@ const CardComponent = (props) => {
       headStyle={{ width: "200px", height: "200px" }}
       style={{ width: 200 }}
       bodyStyle={{ padding: "10px" }}
-      cover={
-        <img
-          alt="example"
-          src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-        />
-      }
+      cover={<img alt="example" src={image} />}
+      onClick={() => handleDetailProduct(id)}
     >
       <StyleNameProduct>{name}</StyleNameProduct>
       <WrapperReporText>
