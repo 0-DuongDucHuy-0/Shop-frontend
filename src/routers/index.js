@@ -29,7 +29,7 @@ export const router = [
     isPrivate: false,
   },
   {
-    path: "/:type",
+    path: "/product/:type",
     page: TypeProductPage,
     isShowHeader: true,
     isPrivate: false,
