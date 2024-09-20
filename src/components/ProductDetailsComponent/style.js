@@ -62,7 +62,7 @@ export const WrapperQualityProduct = styled.div`
   align-items: center;
   width: 120px;
   border: 1px solid #ccc;
-  boder-radius: 4px;
+  border-radius: 4px;
 `;
 
 export const WrapperInputNumber = styled(InputNumber)`

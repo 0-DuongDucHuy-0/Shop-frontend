@@ -23,13 +23,42 @@ import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import * as ProductServices from "../../services/ProductServices";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../LoadingComponent/Loading";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { addOrderProduct } from "../../redux/slides/orderSlider";
 
 const ProductDetailsComponent = ({ idProduct }) => {
-  const [numProduct, setNumProduct] = useState();
+  const [numProduct, setNumProduct] = useState(1);
   const user = useSelector((state) => state.user);
+  const navigator = useNavigate();
+  const dispatch = useDispatch();
 
-  console.log("user", user);
+  const handleAddOderProduct = () => {
+    if (user?.id.length === 0) {
+      navigator("/sign-in");
+    } else {
+      // name: { type: String, required: true },
+      // amount: { type: Number, required: true },
+      // image: { type: String, required: true },
+      // price: { type: Number, required: true },
+      // product: {
+      //   type: momgoose.Schema.Types.ObjectId,
+      //   ref: "Product",
+      //   required: true,
+      // },
+      dispatch(
+        addOrderProduct({
+          orderItem: {
+            name: productDetail?.name,
+            amount: Number(numProduct),
+            image: productDetail?.image,
+            price: productDetail?.price,
+            product: productDetail?._id,
+          },
+        })
+      );
+    }
+  };
 
   const onChange = (e) => {
     setNumProduct(Number(e));
@@ -51,6 +80,8 @@ const ProductDetailsComponent = ({ idProduct }) => {
     keepPreviousData: true, // Keep previous data while fetching new data
     enabled: !!idProduct,
   });
+
+  console.log("user", user, productDetail);
 
   //   const renderStars = (filledStars, totalStars = 5) => {
   //     const stars = [];
@@ -193,6 +224,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                 border: "none",
                 borderRadius: "4px",
               }}
+              onClick={handleAddOderProduct}
               textButton={"Chọn mua"}
               styleTextButton={{ color: "#fff" }}
             ></ButtonComponent>

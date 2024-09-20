@@ -29,6 +29,8 @@ const HeaderComponents = () => {
   const [userAvatar, setUserAvatar] = useState("");
   const [pending, setPending] = useState(false);
   const [search, setSearch] = useState("");
+  const order = useSelector((state) => state.order);
+
   const handleNavigateSignIn = () => {
     navigate("/sign-in");
   };
@@ -134,8 +136,8 @@ const HeaderComponents = () => {
               )}
             </WrapperHeaderAccout>
           </Loading>
-          <div>
-            <Badge count={4} size="small">
+          <div onClick={() => navigate("/order")} style={{ cursor: "pointer" }}>
+            <Badge count={order?.orderItems?.length} size="small">
               <ShoppingCartOutlined
                 style={{ fontSize: "30px", color: "#fff" }}
               />
