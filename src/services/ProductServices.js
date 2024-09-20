@@ -63,6 +63,15 @@ export const getAllTypeProduct = async () => {
   return res.data;
 };
 
+export const getProductType = async (type) => {
+  if (type) {
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/product/get-all?filter=type&filter=${type}`
+    );
+    return res.data;
+  }
+};
+
 // router.post('/create', productController.createProduct)
 // router.put('/update/:id', productController.updateProduct)
 // router.get('/details/:id', productController.getDetailsProduct)

@@ -5,7 +5,8 @@ const TypeProduct = ({ name }) => {
   const navigate = useNavigate();
   const handleNavigateType = (type) => {
     navigate(
-      `/product/${type.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`
+      `/product/${type.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`,
+      { state: type }
     );
   };
 
