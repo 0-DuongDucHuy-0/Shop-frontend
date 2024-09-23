@@ -60,6 +60,10 @@ export const orderSlice = createSlice(
         console.log("it1", itemOrder, idProduct);
         state.orderItems = itemOrder;
       },
+
+      removeOrderAllProduct: (state, action) => {
+        state.orderItems = [];
+      },
     },
   },
   enhancers
@@ -70,6 +74,7 @@ export const {
   increaseAmount,
   decreaseAmount,
   removeOrderProduct,
+  removeOrderAllProduct,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

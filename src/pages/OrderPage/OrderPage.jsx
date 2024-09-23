@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   decreaseAmount,
   increaseAmount,
+  removeOrderAllProduct,
   removeOrderProduct,
 } from "../../redux/slides/orderSlider";
 
@@ -38,6 +39,10 @@ const OrderPage = () => {
 
   const handleDeleteOrder = (idProduct) => {
     dispatch(removeOrderProduct({ idProduct }));
+  };
+
+  const handleDeleteAllOrder = () => {
+    dispatch(removeOrderAllProduct());
   };
 
   const handleOnChangeCheckAll = (e) => {};
@@ -64,7 +69,10 @@ const OrderPage = () => {
                 <span>Đơn giá</span>
                 <span>Số lượng</span>
                 <span>Thành tiền</span>
-                <DeleteOutlined style={{ cursor: "pointer" }} />
+                <DeleteOutlined
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleDeleteAllOrder()}
+                />
               </div>
             </WrapperStyleHeader>
             <WrapperListOrder>
