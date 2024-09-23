@@ -127,11 +127,8 @@ const OrderPage = () => {
                     >
                       <span>
                         <span style={{ fontSize: "13px", color: "#242424" }}>
-                          {order?.price}
+                          {order?.price.toLocaleString("it-IT")}
                         </span>
-                        <WrapperPriceDiscount>
-                          {order?.amount}
-                        </WrapperPriceDiscount>
                       </span>
                       <WrapperCountOrder>
                         <Button
@@ -176,7 +173,7 @@ const OrderPage = () => {
                           fontWeight: 500,
                         }}
                       >
-                        {order?.price * order?.amount}
+                        {(order?.price * order?.amount).toLocaleString("it-IT")}
                       </span>
                       <DeleteOutlined
                         style={{ cursor: "pointer" }}
@@ -207,7 +204,7 @@ const OrderPage = () => {
                     }}
                   >
                     {" "}
-                    {priceMemo} VND
+                    {priceMemo.toLocaleString("it-IT")} VND
                   </span>
                 </div>
                 <div
@@ -245,7 +242,7 @@ const OrderPage = () => {
                     }}
                   >
                     {" "}
-                    {diliveryPriceMemo} VND
+                    {diliveryPriceMemo.toLocaleString("it-IT")} VND
                   </span>
                 </div>
               </WrapperInfo>
@@ -259,7 +256,7 @@ const OrderPage = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    {totalPriceMemo} VND
+                    {totalPriceMemo.toLocaleString("it-IT")}
                   </span>
                 </span>
               </WrapperTotal>

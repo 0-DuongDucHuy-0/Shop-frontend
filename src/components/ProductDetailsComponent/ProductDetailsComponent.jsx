@@ -171,13 +171,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
           </div>
           <WrapperPriceProduct>
             <WrapperPriceTextProduct>
-              {productDetail?.price}
+              {productDetail?.price.toLocaleString("it-IT")} VND
             </WrapperPriceTextProduct>
           </WrapperPriceProduct>
           <WrapperAddressProduct>
             <span>Giao đến </span>
             <span className="address">{user?.address}</span>
-            <span className="change-add">đổi địa chỉ</span>
+            <span className="change-add"> đổi địa chỉ</span>
           </WrapperAddressProduct>
           <div style={{ margin: "10px 0 20px", padding: "10px 0" }}>
             <div style={{ marginBottom: "10px" }}>Số lượng</div>
