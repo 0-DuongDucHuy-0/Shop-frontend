@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   WrapperCountOrder,
   WrapperInfo,
@@ -46,6 +46,25 @@ const OrderPage = () => {
   };
 
   const handleOnChangeCheckAll = (e) => {};
+
+  const priceMemo = useMemo(() => {
+    const result = order?.orderItems?.reduce((total, cur) => {
+      return total + cur.price * cur.amount;
+    }, 0);
+    return result;
+  }, [order]);
+
+  const diliveryPriceMemo = useMemo(() => {
+    if (priceMemo > 100000) {
+      return 20000;
+    } else {
+      return 10000;
+    }
+  }, [priceMemo]);
+
+  const totalPriceMemo = useMemo(() => {
+    return priceMemo + diliveryPriceMemo;
+  }, [priceMemo, diliveryPriceMemo]);
 
   return (
     <div style={{ background: "#f5f5fa", width: "100%", height: "100vh" }}>
@@ -176,7 +195,7 @@ const OrderPage = () => {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
                   }}
                 >
                   <span>Tạm tính</span>
@@ -188,14 +207,14 @@ const OrderPage = () => {
                     }}
                   >
                     {" "}
-                    500 đồng
+                    {priceMemo} VND
                   </span>
                 </div>
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
                   }}
                 >
                   <span>Giảm giá</span>
@@ -207,21 +226,47 @@ const OrderPage = () => {
                     }}
                   >
                     {" "}
-                    5 %
+                    0 %
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <span>Phí giao hàng</span>
+                  <span
+                    style={{
+                      color: "#000",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    {diliveryPriceMemo} VND
                   </span>
                 </div>
               </WrapperInfo>
               <WrapperTotal>
                 <span>Tổng tiền</span>
                 <span style={{ display: "flex", flexDirection: "column" }}>
-                  abc123
+                  <span
+                    style={{
+                      color: "rgb(254,56,52)",
+                      fontSize: "24px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {totalPriceMemo} VND
+                  </span>
                 </span>
               </WrapperTotal>
             </div>
-            <ButtonComponent>
+            <ButtonComponent
               size={40}
-              styleButton=
-              {{
+              styleButton={{
                 background: "rgb(255,57,69)",
                 height: "48px",
                 width: "220px",
@@ -229,9 +274,12 @@ const OrderPage = () => {
                 borderRadius: "4px",
               }}
               textButton={"Mua hàng"}
-              styleTextButton=
-              {{ color: "#fff", fontSize: "15px", fontWeight: "bold" }}
-            </ButtonComponent>
+              styleTextButton={{
+                color: "#fff",
+                fontSize: "15px",
+                fontWeight: "bold",
+              }}
+            ></ButtonComponent>
           </WrapperRight>
         </div>
       </div>
