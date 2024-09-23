@@ -14,15 +14,31 @@ import { WrapperListOrder } from "./style";
 import { WrapperItemOrder } from "./style";
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import { WrapperInputNumber } from "./style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  decreaseAmount,
+  increaseAmount,
+  removeOrderProduct,
+} from "../../redux/slides/orderSlider";
 
 const OrderPage = () => {
   const order = useSelector((state) => state.order);
+  const dispatch = useDispatch();
   const onChange = (e) => {
     console.log("check", e.target.value);
   };
 
-  const handleChangeCount = () => {};
+  const handleChangeCount = (type, idProduct) => {
+    if (type === "decrease") {
+      dispatch(decreaseAmount({ idProduct }));
+    } else {
+      dispatch(increaseAmount({ idProduct }));
+    }
+  };
+
+  const handleDeleteOrder = (idProduct) => {
+    dispatch(removeOrderProduct({ idProduct }));
+  };
 
   const handleOnChangeCheckAll = (e) => {};
 
@@ -97,7 +113,9 @@ const OrderPage = () => {
                             background: "transparent",
                             cursor: "pointer",
                           }}
-                          onClick={handleChangeCount("decrease")}
+                          onClick={() =>
+                            handleChangeCount("decrease", order?.product)
+                          }
                         >
                           <MinusOutlined
                             style={{ fontSize: "10px", cursor: "pointer" }}
@@ -115,7 +133,9 @@ const OrderPage = () => {
                             background: "transparent",
                             cursor: "pointer",
                           }}
-                          onClick={handleChangeCount("increase")}
+                          onClick={() =>
+                            handleChangeCount("increase", order?.product)
+                          }
                         >
                           <PlusOutlined
                             style={{ fontSize: "10px", cursor: "pointer" }}
@@ -131,7 +151,10 @@ const OrderPage = () => {
                       >
                         {order?.price * order?.amount}
                       </span>
-                      <DeleteOutlined style={{ cursor: "pointer" }} />
+                      <DeleteOutlined
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleDeleteOrder(order?.product)}
+                      />
                     </div>
                   </WrapperItemOrder>
                 );
