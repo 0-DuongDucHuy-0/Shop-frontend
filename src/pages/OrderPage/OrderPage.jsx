@@ -1,14 +1,14 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import * as message from "../../components/Message/Message";
 import {
   WrapperCountOrder,
   WrapperInfo,
   WrapperLeft,
-  WrapperPriceDiscount,
   WrapperRight,
   WrapperStyleHeader,
   WrapperTotal,
 } from "./style";
-import { Button, Checkbox, Image } from "antd";
+import { Button, Checkbox, Form, Image } from "antd";
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { WrapperListOrder } from "./style";
 import { WrapperItemOrder } from "./style";
@@ -21,10 +21,14 @@ import {
   removeOrderAllProduct,
   removeOrderProduct,
 } from "../../redux/slides/orderSlider";
+import { useNavigate } from "react-router-dom";
 
 const OrderPage = () => {
   const order = useSelector((state) => state.order);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigator = useNavigate();
+
   const onChange = (e) => {
     console.log("check", e.target.value);
   };
@@ -63,8 +67,26 @@ const OrderPage = () => {
   }, [priceMemo]);
 
   const totalPriceMemo = useMemo(() => {
-    return priceMemo + diliveryPriceMemo;
+    if (priceMemo === 0) {
+      return 0;
+    } else {
+      return priceMemo + diliveryPriceMemo;
+    }
   }, [priceMemo, diliveryPriceMemo]);
+
+  let total = order?.orderItems
+    .map((item) => {
+      return item.amount;
+    })
+    .reduce((acc, curr) => acc + curr, 0);
+
+  const handleAddCart = () => {
+    if (total <= 0) {
+      message.error("Vui lòng thêm sản phẩm");
+    } else {
+      navigator("/payment");
+    }
+  };
 
   return (
     <div style={{ background: "#f5f5fa", width: "100%", height: "100vh" }}>
@@ -195,6 +217,24 @@ const OrderPage = () => {
                     justifyContent: "space-between",
                   }}
                 >
+                  <span>Địa chỉ giao hàng: </span>
+                  <span
+                    style={{
+                      color: "blue",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                    }}
+                  >{`${user?.address}`}</span>
+                </div>
+              </WrapperInfo>
+              <WrapperInfo>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
                   <span>Tạm tính</span>
                   <span
                     style={{
@@ -276,6 +316,7 @@ const OrderPage = () => {
                 fontSize: "15px",
                 fontWeight: "bold",
               }}
+              onClick={handleAddCart}
             ></ButtonComponent>
           </WrapperRight>
         </div>

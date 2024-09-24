@@ -1,15 +1,15 @@
 import { message } from "antd";
 
-const success = ( mess = 'Success' ) => {
-    message.success(mess)
-}
+const success = (mess = "Success") => {
+  message.success(mess);
+};
 
-const error = ( mess = 'Error' ) => {
-    message.success(mess)
-}
+const error = (mess = "Error") => {
+  message.error(mess);
+};
 
-const warning = ( mess = 'Warning' ) => {
-    message.success(mess)
-}
+const warning = (mess = "Warning") => {
+  message.warning(mess);
+};
 
-export { success, error, warning }
+export { success, error, warning };

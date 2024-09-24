@@ -71,10 +71,3 @@ export const getProductType = async (type) => {
     return res.data;
   }
 };
-
-// router.post('/create', productController.createProduct)
-// router.put('/update/:id', productController.updateProduct)
-// router.get('/details/:id', productController.getDetailsProduct)
-// router.delete('/delete/:id', productController.deleteProduct)
-// router.get('/get-all', productController.getAllProduct)
-// router.get("/get-all-type", productController.getAllType);

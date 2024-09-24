@@ -2,6 +2,7 @@ import AdminPage from "../pages/AdminPage/AdminPage";
 import HomePage from "../pages/HomePage/HomePage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
+import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage/ProductDetailsPage";
 import ProductPage from "../pages/ProductPage/ProductPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
@@ -19,6 +20,12 @@ export const router = [
   {
     path: "/order",
     page: OrderPage,
+    isShowHeader: true,
+    isPrivate: false,
+  },
+  {
+    path: "/payment",
+    page: PaymentPage,
     isShowHeader: true,
     isPrivate: false,
   },
